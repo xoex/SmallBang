@@ -7,5 +7,6 @@
         <attr name="circle_end_color" format="color|reference" />
         <attr name="liked" format="boolean"/>
         <attr name="anim_scale_factor" format="float"/>
+        <attr name="view_id" format="reference"/>
     </declare-styleable>
 </resources>

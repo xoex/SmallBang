@@ -11,6 +11,7 @@ import android.util.FloatProperty;
 import android.util.Property;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
@@ -43,9 +44,11 @@ public class SmallBangView extends FrameLayout {
     private int animScaleFactor;
     private CircleView vCircle;
     private DotsView vDotsView;
+    private int scaleViewId;
     private View scaleView;
     private AnimatorSet animatorSet;
     private boolean init;
+
 
     public SmallBangView(Context context) {
         this(context, null);
@@ -67,6 +70,8 @@ public class SmallBangView extends FrameLayout {
         int dotSecondaryColor = array.getColor(R.styleable.SmallBangView_dots_secondary_color, DotsView.COLOR_2);
 
         animScaleFactor = array.getColor(R.styleable.SmallBangView_anim_scale_factor, 3);
+
+        scaleViewId = array.getResourceId(R.styleable.SmallBangView_view_id, 0);
 
         Boolean status = array.getBoolean(R.styleable.SmallBangView_liked, false);
         setSelected(status);
@@ -154,10 +159,24 @@ public class SmallBangView extends FrameLayout {
     }
 
     private View findScaleView() {
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            if (isScaleView(child)) {
-                return child;
+        if (scaleViewId != 0)
+        {
+            try
+            {
+                return ((ViewGroup) getParent()).findViewById(scaleViewId);
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        } else
+        {
+            for (int i = 0; i < getChildCount(); i++)
+            {
+                View child = getChildAt(i);
+                if (isScaleView(child))
+                {
+                    return child;
+                }
             }
         }
         throw new RuntimeException("must have one child in SmallBangView");
